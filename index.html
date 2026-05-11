@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday! 🎂</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fff8ef;
+    --ink: #2a1a3a;
+    --rose: #ff6b9d;
+    --gold: #f5b840;
+    --mint: #6dd3b3;
+    --lilac: #b794f4;
+    --coral: #ff8c66;
+    --sky: #7cc7ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    min-height: 100%;
+    font-family: 'Fraunces', serif;
+    background: radial-gradient(ellipse at top, #ffeef5 0%, #f5e9ff 50%, #fff8ef 100%);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  .stage {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    perspective: 1800px;
+  }
+
+  /* Falling confetti */
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 14px;
+    top: -20px;
+    opacity: 0.85;
+    animation: fall linear infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(720deg); }
+  }
+
+  /* Floating balloons */
+  .balloon {
+    position: fixed;
+    font-size: 36px;
+    animation: float 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .balloon:nth-child(1) { top: 8%; left: 6%; animation-delay: 0s; }
+  .balloon:nth-child(2) { top: 70%; left: 4%; animation-delay: 1.2s; }
+  .balloon:nth-child(3) { top: 14%; right: 5%; animation-delay: 0.6s; }
+  .balloon:nth-child(4) { top: 75%; right: 6%; animation-delay: 2s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-25px) rotate(5deg); }
+  }
+
+  .card {
+    position: relative;
+    width: min(560px, 94vw);
+    height: min(720px, 92vh);
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    transition: transform 1.4s cubic-bezier(.7,.05,.25,1);
+    cursor: pointer;
+    z-index: 2;
+  }
+  .card.open { transform: rotateY(-170deg); cursor: default; }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px 4px 4px 14px;
+    backface-visibility: hidden;
+    box-shadow:
+      0 30px 60px -20px rgba(80, 30, 90, 0.35),
+      0 12px 24px -8px rgba(80, 30, 90, 0.2);
+    overflow: hidden;
+  }
+
+  /* Front cover */
+  .front {
+    background:
+      radial-gradient(circle at 80% 20%, rgba(255,184,72,0.25) 0%, transparent 40%),
+      radial-gradient(circle at 20% 80%, rgba(183,148,244,0.3) 0%, transparent 45%),
+      linear-gradient(135deg, #ff6b9d 0%, #ff8c66 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    color: #fff;
+  }
+  .front::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 1.5px dashed rgba(255,255,255,0.55);
+    border-radius: 8px;
+    pointer-events: none;
+  }
+  .front .label {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 18px;
+  }
+  .front h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(48px, 9vw, 78px);
+    line-height: 0.95;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .front .birthday {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: clamp(64px, 11vw, 96px);
+    color: var(--gold);
+    text-shadow: 2px 2px 0 #fff, 4px 4px 0 rgba(0,0,0,0.1);
+    transform: rotate(-3deg);
+    margin: 8px 0 24px;
+  }
+  .cake {
+    font-size: 80px;
+    margin: 16px 0;
+    animation: bob 2.6s ease-in-out infinite;
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25));
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+  .tap {
+    margin-top: 20px;
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    opacity: 0.85;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* Inside — page deck */
+  .back {
+    background: var(--cream);
+    transform: rotateY(180deg);
+    border-radius: 4px 14px 14px 4px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+  .back::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 6px;
+    background: linear-gradient(180deg, var(--rose), var(--coral), var(--gold));
+    border-radius: 4px 0 0 4px;
+    z-index: 10;
+  }
+
+  .pages {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .page {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    opacity: 0;
+    transform: translateX(40px) scale(0.98);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(42,26,58,0.2) transparent;
+  }
+  .page::-webkit-scrollbar { width: 5px; }
+  .page::-webkit-scrollbar-thumb { background: rgba(42,26,58,0.2); border-radius: 3px; }
+  .page::-webkit-scrollbar-track { background: transparent; }
+
+  /* Inner wrapper centers short content, allows scroll for long */
+  .page-inner {
+    min-height: 100%;
+    padding: 48px 38px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .page.active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: auto;
+  }
+  .page.exit-left {
+    opacity: 0;
+    transform: translateX(-40px) scale(0.98);
+  }
+
+  /* Page accent — colored bar + emoji */
+  .page-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+  }
+  .page-emoji {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    font-size: 52px;
+    opacity: 0.18;
+    transform: rotate(15deg);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .page-quote-mark {
+    font-family: 'Fraunces', serif;
+    font-size: 96px;
+    line-height: 0.6;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .page-message {
+    font-family: 'Kalam', cursive;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+
+  .page-from-label {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 6px;
+  }
+  .page-from-name {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1;
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+  .page-from-relation {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    opacity: 0.6;
+    margin-top: 6px;
+  }
+
+  /* Color themes per page */
+  .page.rose  .page-accent { background: var(--rose); }
+  .page.rose  .page-quote-mark, .page.rose  .page-from-name { color: var(--rose); }
+  .page.gold  .page-accent { background: var(--gold); }
+  .page.gold  .page-quote-mark, .page.gold  .page-from-name { color: #a87a13; }
+  .page.mint  .page-accent { background: var(--mint); }
+  .page.mint  .page-quote-mark, .page.mint  .page-from-name { color: #1e7a5c; }
+  .page.lilac .page-accent { background: var(--lilac); }
+  .page.lilac .page-quote-mark, .page.lilac .page-from-name { color: #6b4ba8; }
+  .page.coral .page-accent { background: var(--coral); }
+  .page.coral .page-quote-mark, .page.coral .page-from-name { color: var(--coral); }
+  .page.sky   .page-accent { background: var(--sky); }
+  .page.sky   .page-quote-mark, .page.sky   .page-from-name { color: #2272a8; }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px 18px;
+    border-top: 1px dashed rgba(42, 26, 58, 0.15);
+    flex-shrink: 0;
+    background: var(--cream);
+  }
+  .nav-btn {
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .nav-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+    background: var(--rose);
+  }
+  .nav-btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+
+  .dots {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(42, 26, 58, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .dot.active {
+    width: 22px;
+    border-radius: 4px;
+    background: var(--rose);
+  }
+
+  .counter {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    opacity: 0.55;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 540px) {
+    .page-inner { padding: 40px 28px 24px; }
+    .page-message { font-size: 19px; }
+    .page-from-name { font-size: 38px; }
+    .page-quote-mark { font-size: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="balloon">🎈</div>
+<div class="balloon">🎈</div>
+<div class="balloon">🎈</div>
+<div class="balloon">🎈</div>
+
+<div class="stage">
+  <div class="card" id="card" onclick="handleCardClick(event)">
+    <!-- Front -->
+    <div class="face front">
+      <div class="label">— A little something for you —</div>
+      <h1>Wishing you a</h1>
+      <div class="birthday">Happy Birthday!</div>
+      <div class="cake">🎂</div>
+      <div class="tap">tap to open ✨</div>
+    </div>
+
+    <!-- Inside — pages rendered dynamically from JSON -->
+    <div class="face back">
+      <div class="pages" id="pages"></div>
+      <div class="nav">
+        <button class="nav-btn" id="prev" aria-label="Previous">‹</button>
+        <div class="dots" id="dots"></div>
+        <button class="nav-btn" id="next" aria-label="Next">›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ═══════════════════════════════════════════════════════════════
+     ✏️  EDIT YOUR WISHES HERE
+     Each object = one page. Fields:
+       name      → who the wish is from (required)
+       message   → the wish text (required)
+       relation  → optional subtitle, e.g. "Best friend since 2015"
+       color     → page theme: rose | gold | mint | lilac | coral | sky
+       emoji     → decorative emoji shown faintly in the corner
+     ═══════════════════════════════════════════════════════════════ */
+const wishes = [
+{
+  name: "Tushar Nautiyal",
+  message: `Happy Birthday, Muskan! 🎉
+
+You are truly one of the most cheerful and positive souls to be around. Your energy brings so much warmth and comfort to everyone, and it genuinely reflects in the way everyone feels supported around you. I really admire how gracefully you manage to hold the team together while also maintaining structure and balance in everything you do.
+
+No matter how hectic things get, you always carry yourself with calmness, patience, and a smile, and that makes a bigger impact than you probably realize. Your dedication, supportive nature, and ability to keep everyone motivated are honestly inspiring.
+
+Wishing you lots of happiness, success, laughter, and all the wonderful things you truly deserve. Keep shining and being the amazing person you are. Have an absolutely fantastic birthday! ✨`,
+  relation: "Tech Team",
+  color: "lilac",
+  emoji: "✨"
+},
+{
+  name: "Alina Mushtaq",
+  message: `Happy Birthday Muskan! 🎉
+
+Wishing you a very happy birthday and a wonderful year ahead. I just wanted to say thank you for always being such a supportive and encouraging person. Your guidance and calm nature make a big difference, and it’s something everyone around you truly appreciates.
+
+You’ve always been someone people can comfortably look up to and learn from, and your positivity and encouragement genuinely motivate others to do better.
+
+Wishing you lots of happiness, success, good health, and all the good things you deserve. Hope you have an amazing day filled with joy and celebration! ✨✨`,
+  relation: "Tech Team",
+  color: "sky",
+  emoji: "🎉"
+},
+  {
+    name: "Swayam Kumar Karn",
+    message: `Happy Birthday Muskan 🎂✨
+
+You are one of the most caring and kind-hearted people I know. The way you always support others, understand everyone, and spread positivity makes you truly special. Your caring nature brings comfort and happiness to the people around you, and that is something really rare and beautiful.
+
+May your birthday be as wonderful as your heart. Wishing you endless happiness, success, love, and smiles in your life. Stay the amazing person you are always 🎉🎁💖`,
+    relation: "Tech Team",
+    color: "rose",
+    emoji: "🎂"
+  },
+  {
+    name: "Tanishq",
+    message: `Happy Birthday, Muskan! 🎉
+
+Wishing you a day filled with happiness, laughter, and all the things you love. You’re genuinely a wonderful person to work with, and I hope this year brings you lots of success, peace, and unforgettable memories. Have an amazing birthday and enjoy your special day! ✨`,
+    relation: "Tech Team",
+    color: "gold",
+    emoji: "🎉"
+  },
+  {
+    name: "Raj",
+    message: `Happy Birthday, Muskan !
+
+Wishing you endless happiness, success, and lots of memorable moments ahead.
+Keep smiling and shining always!`,
+    relation: "Tech Team",
+    color: "mint",
+    emoji: "✨"
+  }
+];
+
+  /* ─── Rendering & Navigation ─── */
+  const pagesEl = document.getElementById('pages');
+  const dotsEl  = document.getElementById('dots');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  let current = 0;
+
+  function render() {
+    pagesEl.innerHTML = wishes.map((w, i) => `
+      <div class="page ${w.color || 'rose'}" data-i="${i}">
+        <div class="page-accent"></div>
+        <div class="page-emoji">${w.emoji || '🎈'}</div>
+        <div class="page-inner">
+          <div class="page-quote-mark">"</div>
+          <p class="page-message">${escapeHtml(w.message)}</p>
+          <div>
+            <div class="page-from-label">— with love from</div>
+            <div class="page-from-name">${escapeHtml(w.name)}</div>
+            ${w.relation ? `<div class="page-from-relation">${escapeHtml(w.relation)}</div>` : ''}
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    dotsEl.innerHTML = wishes.map((_, i) =>
+      `<div class="dot" data-i="${i}"></div>`
+    ).join('');
+
+    dotsEl.querySelectorAll('.dot').forEach(d => {
+      d.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goTo(parseInt(d.dataset.i));
+      });
+    });
+
+    update();
+  }
+
+  function update() {
+    pagesEl.querySelectorAll('.page').forEach((p, i) => {
+      p.classList.toggle('active', i === current);
+      p.classList.toggle('exit-left', i < current);
+      if (i === current) p.scrollTop = 0;
+    });
+    dotsEl.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === wishes.length - 1;
+  }
+
+  function goTo(i) {
+    current = Math.max(0, Math.min(wishes.length - 1, i));
+    update();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(current - 1); });
+  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(current + 1); });
+
+  // Keyboard nav once card is open
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('card').classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  goTo(current - 1);
+    if (e.key === 'ArrowRight') goTo(current + 1);
+  });
+
+  function handleCardClick(e) {
+    const card = document.getElementById('card');
+    if (card.classList.contains('open')) {
+      // Don't close while interacting with inside
+      if (e.target.closest('.back')) return;
+    }
+    card.classList.toggle('open');
+  }
+
+  render();
+
+  /* ─── Confetti ─── */
+  const colors = ['#ff6b9d', '#f5b840', '#6dd3b3', '#b794f4', '#ff8c66', '#fff'];
+  const shapes = ['', 'border-radius:50%;', 'border-radius:2px; transform:skew(15deg);'];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.cssText += shapes[Math.floor(Math.random() * shapes.length)];
+    c.style.animationDuration = (3 + Math.random() * 4) + 's';
+    c.style.animationDelay = -Math.random() * 5 + 's';
+    c.style.width = (6 + Math.random() * 8) + 'px';
+    c.style.height = (10 + Math.random() * 10) + 'px';
+    document.body.appendChild(c);
+  }
+</script>
+</body>
+</html>
